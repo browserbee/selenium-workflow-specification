@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://browserbee.io/selenium-workflow-specification.json",
+  "title": "Selenium Workflow Specification",
+  "description": "Defines a declarative structure for automating browser interactions using Selenium.",
+  "type": "object",
+  "required": ["description", "webDriver", "actions"],
+  "properties": {
+    "webDriver": {
+      "$comment": "https://spec.browserbee.io/selenium-workflow-specification.json#property-webDriver",
+      "$ref": "#/$defs/webDriver"
+    },
+    "actions": {
+      "$comment": "https://spec.browserbee.io/selenium-workflow-specification.json#property-actions",
+      "type": "array",
+      "minItems": 1,
+      "description": "A sequence of actions to be executed in the browser.",
+      "items": {
+        "$ref": "#/$defs/action"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "webDriver": {
+      "$comment": "https://spec.browserbee.io/selenium-workflow-specification.json#definition-webDriver",
+      "type": "object",
+      "required": ["browser", "headless", "implicitWait", "windowSize", "remoteURL"],
+      "properties": {
+        "browser": {
+          "type": "string",
+          "enum": ["chrome", "firefox", "edge", "safari"],
+          "description": "The browser to use for the workflow."
+        },
+        "headless": {
+          "type": "boolean",
+          "description": "Whether to run the browser in headless mode."
+        },
+        "implicitWait": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Implicit wait time in seconds for element searches."
+        },
+        "windowSize": {
+          "$ref": "#/$defs/windowSize"
+        },
+        "remoteURL": {
+          "type": "string",
+          "format": "uri",
+          "description": "Remote WebDriver server URL."
+        },
+        "capabilities": {
+          "type": "object",
+          "description": "Custom browser capabilities.",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "windowSize": {
+      "$comment": "https://spec.browserbee.io/selenium-workflow-specification.json#definition-windowSize",
+      "type": "object",
+      "required": ["width", "height"],
+      "properties": {
+        "width": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Window width in pixels."
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Window height in pixels."
+        }
+      },
+      "additionalProperties": false
+    },
+    "selector": {
+      "$comment": "https://spec.browserbee.io/selenium-workflow-specification.json#definition-selector",
+      "type": "object",
+      "required": ["strategy", "value"],
+      "properties": {
+        "strategy": {
+          "type": "string",
+          "enum": ["css", "xpath", "id", "name"],
+          "description": "The selector strategy to locate elements."
+        },
+        "value": {
+          "type": "string",
+          "description": "The selector value."
+        }
+      },
+      "additionalProperties": false
+    },
+    "action": {
+      "$comment": "https://spec.browserbee.io/selenium-workflow-specification.json#definition-action",
+      "type": "object",
+      "required": ["name", "action"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Unique name or identifier for this action.",
+          "minLength": 1
+        },
+        "action": {
+          "type": "string",
+          "enum": ["navigate", "input", "click", "assert", "screenshot"],
+          "description": "The type of action to perform."
+        },
+        "target": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL to navigate to (for navigate action)."
+        },
+        "selector": {
+          "$ref": "#/$defs/selector"
+        },
+        "value": {
+          "type": "string",
+          "description": "The value to input or assert against."
+        },
+        "expected": {
+          "type": "string",
+          "description": "Expected value for assertions."
+        },
+        "condition": {
+          "type": "string",
+          "enum": ["equals", "contains", "notEquals", "exists"],
+          "description": "Assertion condition."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
