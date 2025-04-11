@@ -1,0 +1,17 @@
+site_name: Selenium Workflow Specification
+site_url: https://schema.browserbee.io
+
+nav:
+  - Home: index.md
+  - Schema:
+      - Selenium Workflow: schema/selenium-workflow.json
+
+theme:
+  name: material
+  features:
+    - navigation.top
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/browserbee/selenium-workflow-specification
